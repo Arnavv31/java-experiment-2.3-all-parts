@@ -1,9 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class Employee {
-    private String name;
-    private int age;
-    private double salary;
+    String name;
+    int age;
+    double salary;
 
     public Employee(String name, int age, double salary) {
         this.name = name;
@@ -11,36 +12,31 @@ class Employee {
         this.salary = salary;
     }
 
-    public String getName() { return name; }
-    public int getAge() { return age; }
-    public double getSalary() { return salary; }
-
     @Override
     public String toString() {
-        return String.format("Name: %-10s Age: %-3d Salary: %.2f", name, age, salary);
+        return "Name: " + name + ", Age: " + age + ", Salary: " + salary;
     }
 }
 
-public class EmployeeSort {
+public class Main {
     public static void main(String[] args) {
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("John", 25, 55000));
-        employees.add(new Employee("Alice", 30, 70000));
-        employees.add(new Employee("Bob", 22, 40000));
-        employees.add(new Employee("David", 28, 60000));
+        employees.add(new Employee("John", 28, 50000));
+        employees.add(new Employee("Alice", 24, 60000));
+        employees.add(new Employee("Bob", 30, 55000));
 
-        System.out.println("Original List:");
+        // Sort by name
+        employees.sort((e1, e2) -> e1.name.compareTo(e2.name));
+        System.out.println("Sorted by Name:");
         employees.forEach(System.out::println);
 
-        employees.sort((e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
-        System.out.println("\nSorted by Name:");
-        employees.forEach(System.out::println);
-
-        employees.sort((e1, e2) -> Integer.compare(e1.getAge(), e2.getAge()));
+        // Sort by age
+        employees.sort((e1, e2) -> Integer.compare(e1.age, e2.age));
         System.out.println("\nSorted by Age:");
         employees.forEach(System.out::println);
 
-        employees.sort((e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
+        // Sort by salary descending
+        employees.sort((e1, e2) -> Double.compare(e2.salary, e1.salary));
         System.out.println("\nSorted by Salary (Descending):");
         employees.forEach(System.out::println);
     }
