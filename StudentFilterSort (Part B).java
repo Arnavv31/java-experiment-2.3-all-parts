@@ -1,43 +1,30 @@
-import java.util.*;
-import java.util.stream.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class Student {
-    private String name;
-    private double marks;
+    String name;
+    double marks;
 
     public Student(String name, double marks) {
         this.name = name;
         this.marks = marks;
     }
-
-    public String getName() { return name; }
-    public double getMarks() { return marks; }
-
-    @Override
-    public String toString() {
-        return String.format("Name: %-10s Marks: %.2f", name, marks);
-    }
 }
 
-public class StudentFilterSort {
+public class partB {
     public static void main(String[] args) {
-        List<Student> students = Arrays.asList(
-            new Student("Ravi", 82.5),
-            new Student("Priya", 65.0),
-            new Student("Aman", 91.0),
-            new Student("Sneha", 74.0),
-            new Student("Karan", 88.5)
-        );
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("John", 80));
+        students.add(new Student("Alice", 70));
+        students.add(new Student("Bob", 90));
+        students.add(new Student("Eve", 76));
 
-        System.out.println("All Students:");
-        students.forEach(System.out::println);
-
-        System.out.println("\nStudents scoring above 75% (Sorted by Marks):");
-
+        System.out.println("Students scoring > 75%, sorted by marks:");
         students.stream()
-                .filter(s -> s.getMarks() > 75)
-                .sorted(Comparator.comparingDouble(Student::getMarks))
-                .map(Student::getName)
+                .filter(s -> s.marks > 75)
+                .sorted((s1, s2) -> Double.compare(s1.marks, s2.marks))
+                .map(s -> s.name)
                 .forEach(System.out::println);
     }
 }
+
