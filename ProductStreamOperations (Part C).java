@@ -1,11 +1,10 @@
 import java.util.*;
-import java.util.stream.*;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 class Product {
-    private String name;
-    private double price;
-    private String category;
+    String name;
+    double price;
+    String category;
 
     public Product(String name, double price, String category) {
         this.name = name;
@@ -13,50 +12,37 @@ class Product {
         this.category = category;
     }
 
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    public String getCategory() { return category; }
-
     @Override
     public String toString() {
-        return String.format("%-10s | %-10s | %.2f", name, category, price);
+        return name + " - " + price;
     }
 }
 
-public class ProductStreamOperations {
+public class partC {
     public static void main(String[] args) {
         List<Product> products = Arrays.asList(
-            new Product("Laptop", 85000, "Electronics"),
-            new Product("Mouse", 800, "Electronics"),
-            new Product("Shirt", 1200, "Clothing"),
-            new Product("Jeans", 2000, "Clothing"),
-            new Product("Mixer", 4500, "Home Appliance"),
-            new Product("Fridge", 25000, "Home Appliance"),
-            new Product("T-Shirt", 700, "Clothing")
+                new Product("Laptop", 70000, "Electronics"),
+                new Product("Phone", 30000, "Electronics"),
+                new Product("Shirt", 1500, "Clothing"),
+                new Product("Jeans", 2000, "Clothing"),
+                new Product("Book", 500, "Books")
         );
 
-        System.out.println("Product List:");
-        products.forEach(System.out::println);
-
-        System.out.println("\nProducts Grouped by Category:");
         Map<String, List<Product>> grouped = products.stream()
-                .collect(Collectors.groupingBy(Product::getCategory));
-        grouped.forEach((category, list) -> {
-            System.out.println(category + ": " + list);
-        });
+                .collect(Collectors.groupingBy(p -> p.category));
+        System.out.println("Products grouped by category:");
+        grouped.forEach((k, v) -> System.out.println(k + ": " + v));
 
-        System.out.println("\nMost Expensive Product in Each Category:");
-        Map<String, Optional<Product>> maxByCategory = products.stream()
+        Map<String, Optional<Product>> maxPrice = products.stream()
                 .collect(Collectors.groupingBy(
-                        Product::getCategory,
-                        Collectors.maxBy(Comparator.comparingDouble(Product::getPrice))
+                        p -> p.category,
+                        Collectors.maxBy(Comparator.comparingDouble(p -> p.price))
                 ));
-        maxByCategory.forEach((category, product) ->
-                System.out.println(category + " -> " + product.get().getName() + " (" + product.get().getPrice() + ")")
-        );
+        System.out.println("\nMost expensive product in each category:");
+        maxPrice.forEach((k, v) -> System.out.println(k + ": " + v.get()));
 
         double avgPrice = products.stream()
-                .collect(Collectors.averagingDouble(Product::getPrice));
-        System.out.println("\nAverage Price of All Products: " + avgPrice);
+                .collect(Collectors.averagingDouble(p -> p.price));
+        System.out.println("\nAverage price of all products: " + avgPrice);
     }
 }
